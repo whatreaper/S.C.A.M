@@ -29,3 +29,6 @@ Update the .env file with your own credentials
 In the backend folder, start the server by running
 npm start
 This will run the application on http://localhost:3000.
+
+Special Thanks
+- [Ollie Jennings](https://github.com/OllieJennings) for the original dataset at [exercises.json](https://github.com/wrkout/exercises.json)
