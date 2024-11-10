@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Universal styling and background */
 * {
     margin: 0;
@@ -111,3 +112,8 @@ nav h1 {
         font-size: 1rem;
     }
 }
+=======
+.half-scaled-image {
+    transform: scale(0.5);
+}
+>>>>>>> efad214426506e0f20e6474d4ecfb62bdbe3c01d

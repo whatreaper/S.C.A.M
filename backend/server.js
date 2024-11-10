@@ -46,9 +46,25 @@ function authenticateToken(req, res, next) {
     });
 }
 
-
 app.get('/profile', authenticateToken, (req, res) => {
     res.json({ message: 'Welcome to your profile!', user: req.user });
+});
+
+// ExerciseDB API
+app.get("/exercises", (req, res) => {
+    const url = 'https://exercisedb-api.vercel.app/api/v1/exercises';
+
+    axios(url)
+        .then(response => {
+            console.log("API response received");
+            console.log("Response status:", response.status);
+            res.json(response.data);
+        })
+        .catch(error => {
+            console.error("Error fetching exercises:", error.message);
+            res.status(error.response.status).json({ error: error.response.data.message });
+        });
+    console.log("Request sent to API");
 });
 
 // CalorieNinjas API
@@ -60,7 +76,6 @@ app.get('/api/nutrition', authenticateToken, async (req, res) => {
     }
 
     try {
-        // Fetch data from CalorieNinja API
         const response = await axios.get('https://api.calorieninjas.com/v1/nutrition', {
             headers: {
                 'X-Api-Key': process.env.CALORIENINJA_API_KEY,
@@ -114,21 +129,16 @@ app.post('/register', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Basic validation
         if (!username || !password) {
             return res.status(400).json({ message: 'Username and password are required.' });
         }
 
-        // Check if user already exists in the database
         const userCheck = await pool.query('SELECT * FROM Users WHERE username = $1', [username]);
         if (userCheck.rows.length > 0) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Save the user to the database with username and password
         await pool.query(
             'INSERT INTO Users (username, password) VALUES ($1, $2)',
             [username, hashedPassword]
@@ -143,22 +153,19 @@ app.post('/register', async (req, res) => {
 
 app.get('/api/user', authenticateToken, async (req, res) => {
     try {
-        const userId = req.user.id; // Assuming user ID is in the JWT token
+        const userId = req.user.id;
         const result = await pool.query('SELECT username FROM users WHERE id = $1', [userId]);
 
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const user = result.rows[0];
-        res.json({ username: user.username });
+        res.json({ username: result.rows[0].username });
     } catch (error) {
         console.error('Error fetching user data:', error);
         res.status(500).json({ message: 'Error fetching user data' });
     }
 });
-
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
