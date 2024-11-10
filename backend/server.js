@@ -49,6 +49,30 @@ app.get('/profile', authenticateToken, (req, res) => {
     res.json({ message: 'Welcome to your profile!', user: req.user });
 });
 
+// ExerciseDB API
+app.get("/exercises", (req, res) => {
+
+    let url = 'https://exercisedb-api.vercel.app/api/v1/exercises';
+  
+    axios(url).then(response => {
+      console.log("API response received"); 
+      console.log("Response status:", response.status);
+      console.log("Response data:", response.data);
+  
+      res.json(response.data);
+  
+    }).catch(error => {
+      console.log("Error Response status:", error.response.status);
+      console.log("Error Response data:", error.response.data);
+      console.log(error.response.data.message);
+      res.status(error.response.status)
+      res.json({error: error.response.data.message});
+  
+    });
+    console.log("Request sent to API"); 
+  
+  });
+
 //CalorieNinjas API
 app.get('/api/nutrition', authenticateToken, async (req, res) => {
     const { query } = req.query;
