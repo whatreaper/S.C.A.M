@@ -22,6 +22,10 @@ npm install
 Database Setup:
 Make sure PostgreSQL is running.
 Create a database named pumpd and set up a user with access
+CREATE DATABASE pumpd;
+\c pumpd
+\i schema.sql
+\dt to view List of relations
 
 Copy the env_sample.json file to a new file named .env in the backend folder
 Update the .env file with your own credentials
@@ -29,3 +33,6 @@ Update the .env file with your own credentials
 In the backend folder, start the server by running
 npm start
 This will run the application on http://localhost:3000.
+
+Special Thanks
+- [Ollie Jennings](https://github.com/OllieJennings) for the original dataset at [exercises.json](https://github.com/wrkout/exercises.json)
