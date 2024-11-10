@@ -1,0 +1,113 @@
+/* Universal styling and background */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    color: white;
+    background: linear-gradient(135deg, #000000, #d92424); /* Red ombre effect */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+/* Navigation bar */
+nav {
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4); /* Slightly transparent black */
+}
+
+nav h1 {
+    font-size: 2rem;
+    color: #ffffff; /* Highlight color for brand */
+}
+
+.nav-links a {
+    margin-left: 1rem;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+
+}
+
+.nav-links {
+    display: flex;
+    align-items: center; /* Aligns links and icon vertically */
+}
+
+.nav-links a:hover {
+    color: #FF5F6D; /* Red highlight on hover */
+}
+
+/* Hero section */
+.hero {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+    min-height: 80vh;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.profile-page {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.card {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin: 1rem auto;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.progress-slider {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    nav h1 {
+        font-size: 1.5rem;
+    }
+    .hero h2 {
+        font-size: 2rem;
+    }
+    .hero p {
+        font-size: 1rem;
+    }
+}

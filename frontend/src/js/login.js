@@ -1,10 +1,11 @@
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
     try {
+        // Send a POST request to the server with the username and password
         const response = await fetch("http://localhost:3000/login", {
             method: "POST",
             headers: {
@@ -12,16 +13,22 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
             },
             body: JSON.stringify({ username, password })
         });
+
+        // Parse the JSON response from the server
         const data = await response.json();
 
-        if (data.token) {
+        if (response.ok && data.token) {
+            // Store the JWT token in localStorage
             localStorage.setItem("token", data.token);
-            document.getElementById("loginMessage").textContent = "Login successful!";
+
+            // Redirect to the profile page after successful login
+            window.location.href = "profile.html";
         } else {
-            document.getElementById("loginMessage").textContent = data.message;
+            // Display the error message from the server if login fails
+            document.getElementById("loginMessage").textContent = data.message || "Login failed";
         }
     } catch (error) {
-        console.error("Error:", error);
-        document.getElementById("loginMessage").textContent = "Login failed!";
+        console.error("Error logging in:", error);
+        document.getElementById("loginMessage").textContent = "Error logging in";
     }
 });

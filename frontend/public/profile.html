@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Pumpd</title>
+    <link rel="stylesheet" href="frontend/src/css/styles.css">
+</head>
+<body>
+    <nav>
+        <h1>Pump'd Fitness</h1>
+        <div class="nav-links">
+            <a href="register.html">Register</a>
+            <a href="login.html">Login</a>
+ 
+        </div>
+    </nav>
+
+    <main class="profile-page">
+        <!-- User's Progress Section -->
+        <!-- <h2 id="username">'s Progress</h2> -->
+        <h2> User's Progress</h2>
+
+        <!-- Progress Tracker Card -->
+        <div class="card progress-card">
+            <h3>Progress Tracker</h3>
+            <input type="range" min="0" max="100" value="70" class="progress-slider" disabled>
+        </div>
+
+        <!-- Daily Motivation Card -->
+        <div class="card motivation-card">
+            <h3>Daily Motivation</h3>
+            <p>"Push yourself because no one else is going to do it for you."</p>
+        </div>
+
+        <!-- Recommended Workouts Card -->
+        <div class="card workouts-card">
+            <h3>Recommended Workouts</h3>
+            <ul>
+                <li>Push-ups: 3 sets of 15</li>
+                <li>Squats: 3 sets of 20</li>
+                <li>Plank: 3 sets of 1 minute</li>
+            </ul>
+        </div>
+    </main>
+
+    <script src="frontend/src/js/profile.js"></script>
+</body>
+</html>
