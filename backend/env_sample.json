@@ -1,5 +1,8 @@
 {
     "PORT": "3000",
     "JWT_SECRET": "your_jwt_secret_key",
-    "DATABASE_URL": "postgresql://your_db_username:your_db_password@localhost:5432/pumpd"
+    "DATABASE_URL": "postgresql://your_db_username:your_db_password@localhost:5432/pumpd",
+    "CALORIENINJA_API_KEY": "API_KEY_HERE",
+    "exercise_api_url": "https://exercisedb-api.vercel.app/api/v1/exercises"
+
 }
