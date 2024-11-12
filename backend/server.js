@@ -51,8 +51,26 @@ app.get('/profile', authenticateToken, (req, res) => {
 });
 
 // ExerciseDB API
+
 app.get("/exercises", (req, res) => {
-    const url = 'https://exercisedb-api.vercel.app/api/v1/exercises';
+    let exercise = req.query.search;
+    let amount = req.query.limit;
+    let offset = req.query.offset;
+
+    /*if (!typeof exercise === 'undefined') {
+        exercise = '';
+    }
+
+    function isNumber(str) { return !isNaN(str) && !isNaN(parseFloat(str)); }
+
+    if( !isNumber(amount) || typeof amount === 'undefined') {
+        amount = 10;
+    }*/
+
+    // Move base url into env file later on
+    let url = `https://exercisedb-api.vercel.app/api/v1/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
+    console.log(`Url : ${url}`);
+
 
     axios(url)
         .then(response => {

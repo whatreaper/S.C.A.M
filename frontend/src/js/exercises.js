@@ -1,9 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
-    fetch("/exercises").then(response => {
+function fetchExercise(url) {
+
+    fetch(url).then(response => {
         if (response.status >= 400) {
             response.json().then(errorBody => {
-                let div = document.getElementById("message");
-                div.textContent = errorBody.error;
+                let message = document.getElementById("message");
+                message.textContent = errorBody.error;
             })
         } else {
             response.json().then(body => {
@@ -15,6 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 let data = body.data;
                 let listOfExercise = data.exercises;
                 let tbody = document.getElementById("display");
+                let currentPage = data.currentPage;
+                let totalPage = data.totalPages;
+
+                
+                let pageNumberDiv = document.getElementById("pageNumber");
+                let pageNumber = `Current Page Number / Total Page: ${currentPage} / ${totalPage}`;
+                pageNumberDiv.textContent = pageNumber;
+
                 // clear tbody everytime
                 tbody.textContent = '';
     
@@ -59,4 +68,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }).catch(error => {
         console.log("Outer Error:", error);
     })
+}
+
+let exerciseInput = document.getElementById("searchForExercise");
+let displayAmount = document.getElementById("displayAmount");
+let sendButton = document.getElementById("send");
+let nextButton = document.getElementById("next");
+let exercise = '';
+let amount = 10;
+let offset = 0;
+
+document.addEventListener('DOMContentLoaded', () => {
+    let url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
+    fetchExercise(url);
+});
+
+sendButton.addEventListener("click", () => {
+
+    if (typeof exerciseInput.value !== 'undefined' && typeof exerciseInput.value === 'string') {
+        exercise = exerciseInput.value;
+    }
+
+    amount = displayAmount.value;
+
+    function isNumber(str) { return !isNaN(str) && !isNaN(parseFloat(str)); }
+
+    if( !isNumber(amount) || typeof amount === 'undefined') {
+        amount = 10;
+    } else {
+        amount = displayAmount.value;
+    }
+
+    let url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
+
+    fetchExercise(url);
+});
+
+nextButton.addEventListener("click", () => {
+    
+    offset += amount;
+    let url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
+
+    fetchExercise(url);
 });
