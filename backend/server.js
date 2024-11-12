@@ -57,7 +57,7 @@ app.get("/exercises", (req, res) => {
     let amount = req.query.limit;
     let offset = req.query.offset;
 
-    /*if (!typeof exercise === 'undefined') {
+    if (!typeof exercise === 'undefined') {
         exercise = '';
     }
 
@@ -65,12 +65,12 @@ app.get("/exercises", (req, res) => {
 
     if( !isNumber(amount) || typeof amount === 'undefined') {
         amount = 10;
-    }*/
+    }
 
     // Move base url into env file later on
     let url = `https://exercisedb-api.vercel.app/api/v1/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
+    
     console.log(`Url : ${url}`);
-
 
     axios(url)
         .then(response => {
