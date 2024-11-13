@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
+const quoteRoutes = require('./routes/quotes');
 
 // Load environment variables
 dotenv.config();
@@ -28,6 +29,7 @@ pool.query('SELECT NOW()', (err, res) => {
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 app.use('/frontend/src', express.static(path.join(__dirname, '../frontend/src')));
+app.use('/api', quoteRoutes);
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
@@ -157,17 +159,54 @@ app.post('/register', async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        await pool.query(
-            'INSERT INTO Users (username, password) VALUES ($1, $2)',
+        const result = await pool.query(
+            'INSERT INTO Users (username, password) VALUES ($1, $2) RETURNING id',
             [username, hashedPassword]
         );
 
-        res.status(201).json({ message: 'User registered successfully' });
+        const userId = result.rows[0].id;  // Get the user's id
+
+        // Generate token with user id
+        const token = jwt.sign({ id: userId, username: username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.status(201).json({ message: 'User registered successfully', token });
     } catch (error) {
         console.error('Error in /register route:', error);
         res.status(500).json({ message: 'Error registering user' });
     }
 });
+
+//Login Route
+app.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({ message: 'Username and password are required.' });
+        }
+
+        const userResult = await pool.query('SELECT * FROM Users WHERE username = $1', [username]);
+        if (userResult.rows.length === 0) {
+            return res.status(400).json({ message: 'User does not exist' });
+        }
+
+        const user = userResult.rows[0];
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+            return res.status(401).json({ message: 'Invalid password' });
+        }
+
+        // Generate token with user id
+        const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.json({ message: 'Login successful', token });
+    } catch (error) {
+        console.error('Error in /login route:', error);
+        res.status(500).json({ message: 'Error logging in' });
+    }
+});
+
+
 
 app.get('/api/user', authenticateToken, async (req, res) => {
     try {

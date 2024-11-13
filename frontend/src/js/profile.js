@@ -3,29 +3,47 @@ document.addEventListener('DOMContentLoaded', async () => {
         const token = localStorage.getItem('token'); 
 
         if (!token) {
-            // Redirect to login if token is missing
             window.location.href = 'login.html';
             return;
         }
 
-        const response = await fetch('http://localhost:3000/api/user', {
+        // Fetch user data
+        const userResponse = await fetch('http://localhost:3000/api/user', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
 
-        if (!response.ok) {
+        if (!userResponse.ok) {
             throw new Error('Failed to fetch user data');
         }
 
-        const data = await response.json();
-        const userName = data.username;
-        
-        // Display the user's name on the profile page
+        const userData = await userResponse.json();
+        const userName = userData.username;
         document.getElementById('username').textContent = `${userName}'s Progress`;
+
+        // Fetch daily motivational quote from your backend
+        const quoteResponse = await fetch('http://localhost:3000/api/daily-quote');
+        const quoteData = await quoteResponse.json();
+        document.getElementById('motivation').textContent = quoteData.quote || "Push yourself because no one else is going to do it for you.";
+
+        // Fetch recommended workouts
+        const exercisesResponse = await fetch('/exercises');
+        const exercisesData = await exercisesResponse.json();
+        const exercisesList = exercisesData.data.exercises;
+
+        // Select 5 random exercises
+        const recommendedWorkouts = document.getElementById('recommended-workouts');
+        recommendedWorkouts.innerHTML = '';
+        const randomExercises = exercisesList.sort(() => 0.5 - Math.random()).slice(0, 5);
+        randomExercises.forEach(exercise => {
+            const li = document.createElement('li');
+            li.textContent = `${exercise.name}: ${exercise.reps || "3 sets of 10"}`;
+            recommendedWorkouts.appendChild(li);
+        });
     } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('Error fetching data:', error);
         document.getElementById('username').textContent = 'Error loading user data';
     }
 });
