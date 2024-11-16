@@ -87,60 +87,40 @@ app.get("/exercises", (req, res) => {
     console.log("Request sent to API");
 });
 
-// CalorieNinjas API
-app.get('/api/nutrition', authenticateToken, async (req, res) => {
-    const { query } = req.query;
-
-    if (!query) {
-        return res.status(400).json({ message: 'Query parameter is required' });
-    }
-
+// CalorieNinjas API Route
+app.get('/api/nutrition', async (req, res) => {
     try {
-        const response = await axios.get('https://api.calorieninjas.com/v1/nutrition', {
+        const query = req.query.search || ''; // Default to empty string if undefined
+
+        if (query.trim() === '') {
+            return res.status(400).json({ message: 'Search query cannot be empty.' });
+        }
+
+        // Construct the CalorieNinja API URL without limit and offset
+        const url = `https://api.calorieninjas.com/v1/nutrition?query=${encodeURIComponent(query)}`;
+
+        console.log(`Fetching from CalorieNinja API: ${url}`);
+
+        const response = await axios.get(url, {
             headers: {
                 'X-Api-Key': process.env.CALORIENINJA_API_KEY,
-                'Content-Type': 'application/json',
+
             },
-            params: { query },
         });
 
         if (response.data && response.data.items) {
-            const nutritionalData = response.data.items;
-
-            // Insert search history into the database
-            const userId = req.user.id;
-            const searchHistoryResult = await pool.query(
-                'INSERT INTO SearchHistory (user_id, query, timestamp) VALUES ($1, $2, $3) RETURNING id',
-                [userId, query, new Date()]
-            );
-            const searchHistoryId = searchHistoryResult.rows[0].id;
-
-            // Insert each nutrition item into NutritionData table
-            for (const item of nutritionalData) {
-                await pool.query(
-                    'INSERT INTO NutritionData (search_history_id, name, calories, fat_total_g, carbohydrates_total_g, fiber_g, protein_g, sodium_mg, sugar_g, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
-                    [
-                        searchHistoryId,
-                        item.name,
-                        item.calories,
-                        item.fat_total_g,
-                        item.carbohydrates_total_g,
-                        item.fiber_g,
-                        item.protein_g,
-                        item.sodium_mg,
-                        item.sugar_g,
-                        new Date(),
-                    ]
-                );
-            }
-
-            res.json(nutritionalData);
+            res.json(response.data.items);
         } else {
-            res.status(404).json({ message: 'No nutritional information found' });
+            res.status(404).json({ message: 'No nutritional information found.' });
         }
     } catch (error) {
-        console.error('Error fetching nutritional data:', error.message);
-        res.status(500).json({ message: 'Error fetching nutritional data' });
+        console.error('Error fetching from CalorieNinja API:', error.message);
+        if (error.response) {
+            console.error('Response data:', error.response.data);
+            res.status(error.response.status).json({ message: error.response.data.message || 'Error fetching nutritional data.' });
+        } else {
+            res.status(500).json({ message: 'Internal server error.' });
+        }
     }
 });
 
