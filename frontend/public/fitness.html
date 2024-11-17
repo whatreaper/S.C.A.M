@@ -1,32 +1,53 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">        
-        <title>Exercises</title>
-        <link rel="stylesheet"  type="text/css" href="/frontend/src/css/styles.css">
-    </head>
-    <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness</title>
+    <link rel="stylesheet" href="frontend/src/css/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html"><h1>Pump'd Fitness</h1></a>
+        <div class="nav-links">
+            <a href="register.html">Register</a>
+            <a href="login.html">Login</a>
+        </div>
+    </nav>
+
+    <main>
         <h1>Fitness Base</h1>
-        <section id="exercises"></section>
-            <h2>Exercises</h2>
-            <p>Browse our catalog of exercises <a href="exercises.html">here</a></p>
-        </section>
+        <a href="exercises.html" class="section-link">
+            <section id="exercises" class="section-bg">
+                <h2>Exercises</h2>
+                <p>Browse our catalog of exercises</p>
+            </section>
+        </a>
 
-        <section id="workouts">
-            <h2>Workouts</h2>
-            <p>Find the perfect workout <a href="workouts.html">here</a></p>
-        </section>
+        <a href="workouts.html" class="section-link">
+            <section id="workouts" class="section-bg">
+                <h2>Workouts</h2>
+                <p>Find the perfect workout</p>
+            </section>
+        </a>
 
-        <section id="training-splits">
-            <h2>Training Splits</h2>
-            <p>Learn about which training split is right for your goals <a href="training-splits.html">here</a></p>
-        </section>
+        <a href="training-splits.html" class="section-link">
+            <section id="training-splits" class="section-bg">
+                <h2>Training Splits</h2>
+                <p>Learn about which training split is right for your goals</p>
+            </section>
+        </a>
 
-        <section id="workout-tracking">
-            <h2>Workout Tracker</h2>
-            <p>Track your workouts and progress <a href="workout-tracking.html">here</a></p>
-        </section>
-        
-    </body>
+        <a href="workout-tracking.html" class="section-link">
+            <section id="workout-tracking" class="section-bg">
+                <h2>Workout Tracker</h2>
+                <p>Track your workouts and progress</p>
+            </section>
+        </a>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Pump'd Fitness. All rights reserved.</p>
+    </footer>
+</body>
 </html>

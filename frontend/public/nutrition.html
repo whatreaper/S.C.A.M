@@ -10,15 +10,26 @@
     
 </head>
 <body>
-    <h1>Nutrition Search</h1>
+    <nav>
+        <a href="index.html"><h1>Pump'd Fitness</h1></a>
+        <div class="nav-links">
+            <a href="register.html">Register</a>
+            <a href="login.html">Login</a>
+        </div>
+    </nav>
 
-    <!-- Nutrition Search Form -->
-    <div>
-        <input type="text" id="nutritionQuery" placeholder="Enter food item" required>
-        <button onclick="searchNutrition()">Search Nutrition</button>
-    </div>
+    <main>
+        <h1>Nutrition Search</h1>
+        <div>
+            <input type="text" id="nutritionQuery" placeholder="Enter food item" required>
+            <button onclick="searchNutrition()">Search Nutrition</button>
+        </div>
+        <div id="nutritionResponse"></div>
+    </main>
 
-    <div id="nutritionResponse"></div>
+    <footer>
+        <p>&copy; 2024 Pump'd Fitness. All rights reserved.</p>
+    </footer>
 
     <script src="frontend/src/js/nutrition.js" defer></script>
 
