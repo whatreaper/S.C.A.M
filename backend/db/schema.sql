@@ -20,11 +20,15 @@ CREATE TABLE WorkoutPlans (
 --Exercises
 CREATE TABLE Exercises (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    api_id INTEGER UNIQUE NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    muscle_group VARCHAR(100),
+    exercise_id VARCHAR(100) NOT NULL,
+    exercise_name VARCHAR(100) NOT NULL,
+    gif_url VARCHAR(255),
+    instructions VARCHAR[],
+    target_muscles VARCHAR(100),
+    body_parts VARCHAR(100),
+    equipments VARCHAR(100),
+    secondary_muscle VARCHAR[],
     calories_burned INTEGER,
-    image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

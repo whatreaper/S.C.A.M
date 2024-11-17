@@ -70,6 +70,63 @@ function fetchExercise(url) {
     })
 }
 
+const maxOffset = 1300; // Set the maximum offset value
+
+async function getExercises() {
+    for (let i = 0; i <= maxOffset / 100; i++) { // Set the loop to run until maxOffset
+        await fetch(`/addExercises`).then(response => {
+            if (response.status >= 400) {
+                response.json().then(errorBody => {
+                    let message = document.getElementById("message");
+                    message.textContent = errorBody.error;
+                });
+            } else {
+                console.log(`Offset (i * 100): ${i * 100}`); // Log the actual offset value
+                response.json().then(async body => {
+                    let data = body.data;
+                    let listOfExercise = data.exercises;
+                    for (let j = 0; j < listOfExercise.length; j++) {
+                        let exercise = listOfExercise[j];
+                        let exerciseId = exercise.exerciseId;
+                        let exerciseName = exercise.name;
+                        let exercise_gif_url = exercise.gifUrl;
+                        let exerciseInstructions = exercise.instructions;
+                        let exercise_muscle = exercise.targetMuscles[0];
+                        let exercise_body_part = exercise.bodyParts[0];
+                        let exercise_equipments = exercise.equipments[0];
+                        let exercise_secondary_muscles = exercise.secondaryMuscles;
+
+                        await fetch("/add", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                exerciseId: exerciseId, 
+                                exerciseName: exerciseName, 
+                                exercise_gif_url: exercise_gif_url, 
+                                exerciseInstructions: exerciseInstructions, 
+                                exercise_muscle: exercise_muscle, 
+                                exercise_body_part: exercise_body_part,
+                                exercise_equipments: exercise_equipments,
+                                exercise_secondary_muscles: exercise_secondary_muscles
+                            }),
+                        });
+                    }
+                }).catch(error => {
+                    console.log(error); 
+                });
+            }
+        }).catch(error => {
+            console.log("Outer Error:", error);
+        });
+    }
+}
+
+
+
+
+
 let exerciseInput = document.getElementById("searchForExercise");
 let displayAmount = document.getElementById("displayAmount");
 let sendButton = document.getElementById("send");
@@ -81,23 +138,13 @@ let offset = 0;
 document.addEventListener('DOMContentLoaded', () => {
     let url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
     fetchExercise(url);
+    getExercises();
 });
 
 sendButton.addEventListener("click", () => {
 
-    if (typeof exerciseInput.value !== 'undefined' && typeof exerciseInput.value === 'string') {
-        exercise = exerciseInput.value;
-    }
-
+    exercise = exerciseInput.value;
     amount = displayAmount.value;
-
-    function isNumber(str) { return !isNaN(str) && !isNaN(parseFloat(str)); }
-
-    if( !isNumber(amount) || typeof amount === 'undefined') {
-        amount = 10;
-    } else {
-        amount = displayAmount.value;
-    }
 
     let url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
 
@@ -105,7 +152,17 @@ sendButton.addEventListener("click", () => {
 });
 
 nextButton.addEventListener("click", () => {
-    
+    exercise = exerciseInput.value;
+    amount = displayAmount.value;
+
+    function isNumber(str) { return !isNaN(str) && !isNaN(parseFloat(str)); }
+
+    if( !isNumber(amount) || typeof amount === 'undefined') {
+        amount = 10;
+    } else {
+        amount = parseInt(amount);
+    }
+
     offset += amount;
     let url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
 

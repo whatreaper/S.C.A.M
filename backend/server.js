@@ -53,6 +53,7 @@ app.get('/profile', authenticateToken, (req, res) => {
 });
 
 // ExerciseDB API
+let exerciseDBBaseUrl = process.env.exercise_api_url; // use this to make requests
 
 app.get("/exercises", (req, res) => {
     let exercise = req.query.search;
@@ -69,8 +70,9 @@ app.get("/exercises", (req, res) => {
         amount = 10;
     }
 
-    // Move base url into env file later on
-    let url = `https://exercisedb-api.vercel.app/api/v1/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
+    offset = parseInt(offset);
+
+    let url = `${exerciseDBBaseUrl}?search=${exercise}&offset=${offset}&limit=${amount}`;
     
     console.log(`Url : ${url}`);
 
@@ -86,6 +88,78 @@ app.get("/exercises", (req, res) => {
         });
     console.log("Request sent to API");
 });
+
+let databaseOffset = 0;
+
+async function axiosExercise(url) {
+    try {
+        const response = await axios.get(url);
+        console.log("API response received");
+        console.log("Response status:", response.status);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching exercises:", error.message);
+        throw error;
+    }
+}
+
+async function getDataAndRespond(url, req, res) {
+    try {
+        let data = await axiosExercise(url);
+        res.json(data);
+    } catch (error) {
+        res.status(error.response.status).json({ error: error.response.data.message });
+    }
+}
+
+app.get("/addExercises", (req, res) => {
+    let exercise = '';
+    let amount = 100;
+
+    let url = `${exerciseDBBaseUrl}?search=${exercise}&offset=${databaseOffset}&limit=${amount}`;
+    console.log(`Url: ${url}`);
+    console.log(`Current Offset: ${databaseOffset}`);
+    databaseOffset += 100;
+
+    getDataAndRespond(url, req, res);
+
+    return;
+   
+
+});
+
+// Endpoint to add exercises to the database
+app.post("/add", (req, res) => {
+    let {
+        exerciseId,
+        exerciseName,
+        exercise_gif_url,
+        exerciseInstructions,
+        exercise_muscle,
+        exercise_body_part,
+        exercise_equipments,
+        exercise_secondary_muscles
+    } = req.body;
+
+    try {
+        let text = 'INSERT INTO exercises (exercise_id, exercise_name, gif_url, instructions, target_muscles, body_parts, equipments, secondary_muscle) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *';
+        let values = [exerciseId, exerciseName, exercise_gif_url, exerciseInstructions, exercise_muscle, exercise_body_part, exercise_equipments, exercise_secondary_muscles];
+
+        pool.query(text, values)
+            .then(result => {
+                console.log("Exercise added:", result.rows[0]);
+                res.json(result.rows[0]);
+            })
+            .catch(err => {
+               // console.error("Error inserting exercise:", err.stack);
+                res.status(500).json({ error: "Error inserting exercise" });
+            });
+    } catch (err) {
+        console.error(err.stack);
+        res.status(500).json({ error: "Error inserting exercise" });
+    }
+});
+
 
 // CalorieNinjas API Route
 app.get('/api/nutrition', async (req, res) => {
