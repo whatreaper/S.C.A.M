@@ -1,33 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
         <title>Exercises</title>
-        <link rel="stylesheet"  type="text/css" href="/frontend/src/css/styles.css">
+        <link rel="stylesheet" href="frontend/src/css/styles.css">
     </head>
     <body>
-        <h1>Exercises Base</h1>
-        <div>
-            <label for="searchForExercise">Search For Specific Exercise:</label>
-            <input id="searchForExercise" type="text" />
-            <button id="send">Search</button>
-        </div>
-        <div>
-            <label for="display">Display Amount: 1 - 99</label>
-            <input id="displayAmount" type="text" />
-        </div>
-        <div id="pageNumber"></div>
-        <button id="next"> Next Page</button>
-        <div id="message"></div>
-        <table>
-            <tr>
-                <th>Image</th>
-                <th>Exercise</th>
-                <th>Instruction</th>
-            </tr>
-            <tbody id="display"></tbody>
-        </table>
-        <script src="/frontend/src/js/exercises.js"></script>
+        <nav>
+            <a href="index.html"><h1>Pump'd Fitness</h1></a>
+            <div class="nav-links">
+                <a href="register.html">Register</a>
+                <a href="login.html">Login</a>
+            </div>
+        </nav>
+
+        <main>
+            <h1>Exercises Base</h1>
+            <div>
+                <label for="searchForExercise">Search For Specific Exercise:</label>
+                <input id="searchForExercise" type="text" />
+                <button id="send">Search</button>
+            </div>
+            <div>
+                <label for="display">Display Amount: 1 - 99</label>
+                <input id="displayAmount" type="text" />
+            </div>
+            <div id="pageNumber"></div>
+            <button id="next"> Next Page</button>
+            <div id="message"></div>
+            <table>
+                <tr>
+                    <th>Image</th>
+                    <th>Exercise</th>
+                    <th>Instruction</th>
+                </tr>
+                <tbody id="display"></tbody>
+            </table>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Pump'd Fitness. All rights reserved.</p>
+        </footer>
+
+        <script src="frontend/src/js/exercises.js"></script>
     </body>
 </html>
