@@ -1,4 +1,4 @@
-/* Universal styling and background */
+/* Universal styling */
 * {
     margin: 0;
     padding: 0;
@@ -7,166 +7,146 @@
 }
 
 html, body {
-    height: 100%; /* Ensure the body takes up the full height */
-}
-
-body {
-    color: white;
-    background: linear-gradient(135deg, #000000, #d92424); /* Red ombre effect */
+    width: 100%;
+    height: 100%;
+    background-color: #f5f5f5; /* Light, neutral background */
+    color: #333; /* Dark text for better readability */
     display: flex;
     flex-direction: column;
-    justify-content: space-between; 
     align-items: center;
-    text-align: center;
+    justify-content: flex-start;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* Navigation bar */
 nav {
     width: 100%;
+    height: auto;
+    background-color: #ff5733; /* Vibrant orange for the nav */
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0, 0, 0, 0.4); /* Slightly transparent black */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
 nav h1 {
     font-size: 2rem;
-    color: #ffffff; /* Highlight color for brand */
+    color: white;
+    margin: 0;
 }
 
-.nav-links a {
-    margin-left: 1rem;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
+#logoutButton {
+    border: none;
+    background: transparent; /* Match the rest of the navbar */
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.profile-icon{
+    width: 70px;
+    height: 60px;
 }
 
 .nav-links {
     display: flex;
-    align-items: center; /* Aligns links and icon vertically */
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: #FF5F6D; /* Red highlight on hover */
-}
-
-/* Remove blue underline from links */
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-a:focus, a:active {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* Main content */
-main {
-    flex: 1; /* Make the main content area flexible */
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    color: #ddd; /* Light hover effect */
 }
 
 /* Hero section */
 .hero {
     text-align: center;
-    margin-top: 0.5rem; /* Further reduced margin-top */
-    padding: 0.5rem; /* Further reduced padding */
-    min-height: 30vh; /* Further adjusted min-height */
+    margin: 2rem 0;
 }
 
 .hero h2 {
     font-size: 2.5rem;
     font-weight: bold;
-    margin-bottom: 1rem;
+    color: #ff5733; /* Match nav color */
 }
 
 .hero p {
     font-size: 1.2rem;
-    margin-top: 0.5rem;
+    color: #555;
 }
 
-/* Section background */
+/* Section styling */
 .section-bg {
-    margin: 0.5rem 0; /* Further reduced margin */
-    padding: 0.5rem; /* Further reduced padding */
-    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white */
+    width: 80%;
+    margin: 1rem auto;
+    padding: 1.5rem;
+    background-color: white;
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.section-link {
-    display: block;
-    width: 100%;
-    text-decoration: none;
-    color: inherit;
+.section-bg:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Elevated hover effect */
 }
 
-.section-link:hover .section-bg {
-    background-color: rgba(255, 255, 255, 0.2); /* Slightly more transparent white on hover */
-}
-
-/* Fitness section */
-#fitness {
-    margin: 0.5rem 0; /* Further reduced margin */
-    padding: 0.5rem; /* Further reduced padding */
-    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white */
-    border-radius: 8px;
-}
-
-#fitness h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-#fitness p {
-    font-size: 1rem;
-}
-
-/* Nutrition section */
-#nutrition {
-    margin: 0.5rem 0; /* Further reduced margin */
-    padding: 0.5rem; /* Further reduced padding */
-    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white */
-    border-radius: 8px;
-}
-
-#nutrition h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-#nutrition p {
-    font-size: 1rem;
-}
-
-/* Form styling */
+/* Forms */
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-color: white;
+    padding: 2rem;
     margin: 2rem 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
 }
 
 form label {
-    margin: 0.5rem 0;
+    display: block;
+    margin: 1rem 0 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
 }
 
 form input {
-    padding: 0.5rem;
-    margin: 0.5rem 0;
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+}
+
+form input:focus {
+    border-color: #ff5733;
+    outline: none;
+    box-shadow: 0 0 4px rgba(255, 87, 51, 0.4); /* Subtle glow */
 }
 
 form button {
-    padding: 0.5rem 1rem;
-    background-color: #FF5F6D;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #ff5733;
     color: white;
+    font-size: 1rem;
+    font-weight: bold;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -174,52 +154,100 @@ form button {
 }
 
 form button:hover {
-    background-color: #d92424;
+    background-color: #e04e2b; /* Darker shade on hover */
 }
 
-/* Card styling */
+/* Cards */
 .card {
-    border: 1px solid #ddd;
-    padding: 1rem;
-    margin: 1rem auto;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 8px;
     background-color: white;
-    color: black;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 500px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .card h3 {
+    font-size: 1.5rem;
+    color: #333;
     margin-bottom: 1rem;
 }
 
-.profile-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    margin-left: 10px;
+.card p {
+    font-size: 1rem;
+    color: #555;
 }
 
-.profile-page {
+/* Tables */
+table {
+    width: 90%;
+    margin: 2rem auto;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+th {
+    background-color: #ff5733;
+    color: white;
+    font-size: 1.2rem;
     text-align: center;
-    margin-top: 2rem;
 }
 
-.progress-slider {
-    width: 100%;
-    margin-top: 1rem;
+tr:hover {
+    background-color: #f9f9f9;
 }
 
-/* Responsive adjustments */
+td {
+    color: #555;
+}
+
+/* Buttons */
+button {
+    padding: 0.5rem 1rem;
+    background-color: #ff5733;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e04e2b;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     nav h1 {
         font-size: 1.5rem;
     }
+
     .hero h2 {
         font-size: 2rem;
     }
+
     .hero p {
         font-size: 1rem;
+    }
+
+    table {
+        width: 100%;
     }
 }
