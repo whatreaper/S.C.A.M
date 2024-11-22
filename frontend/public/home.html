@@ -3,27 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Pumpd</title>
+    <title>Pumpd - Home</title>
     <link rel="stylesheet" href="frontend/src/css/styles.css">
 </head>
 <body>
     <nav>
-        <h1>Pump'd Fitness</h1>
+        <a href="home.html"><h1>Pump'd Fitness</h1></a>
         <div class="nav-links">
-            <a href="exercises.html">Exercises</a>
-            <a href="login.html">Login</a>
+            <a href="logout.html">Logout</a>
             <a href="profile.html">
                 <img src="/images/profile.png" alt="Profile" class="profile-icon">
             </a>
-    
         </div>
     </nav>
 
     <main>
         <section class="hero">
-            <h2>Welcome to Pump'd!</h2>
-            <p>Your personalized fitness journey begins here. Track your progress, plan workouts, and achieve your goals!</p>
+            <h2>Your Personalized Fitness Tracker and Workout Planner</h2>
+            <p>Welcome to Pump'd, where your fitness journey is just a click away!</p>
         </section>
+
+        <a href="fitness.html" class="section-link">
+            <section id="fitness" class="section-bg">
+                <h2>Fitness Section</h2>
+                <p>Check out our fitness section</p>
+            </section>
+        </a>
+
+        <a href="nutrition.html" class="section-link">
+            <section id="nutrition" class="section-bg">
+                <h2>Nutrition Section</h2>
+                <p>Explore our nutrition section</p>
+            </section>
+        </a>
+
+        <a href="profile.html" class="section-link">
+            <section id="profile" class="section-bg">
+                <h2>View your Profile</h2>
+                <p>See your progress!</p>
+            </section>
+        </a>
+
+        <a href="leaderboard.html" class="section-link">
+            <section id="leaderboard" class="section-bg">
+                <h2>Users Leaderboard</h2>
+                <p>See who's leading</p>
+            </section>
+        </a>
     </main>
+
+    <footer>
+        <p>&copy; 2024 Pump'd Fitness. All rights reserved.</p>
+    </footer>
+
+    <script src="frontend/src/js/scripts.js"></script>
 </body>
 </html>

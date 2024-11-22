@@ -253,12 +253,15 @@ app.post('/login', async (req, res) => {
 
         // Generate token with user id
         const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ message: 'Login successful', token });
+        
+        // Return token and userId
+        res.json({ message: 'Login successful', token, userId: user.id });
     } catch (error) {
         console.error('Error in /login route:', error);
         res.status(500).json({ message: 'Error logging in' });
     }
 });
+
 
 
 
@@ -278,6 +281,73 @@ app.get('/api/user', authenticateToken, async (req, res) => {
     }
 });
 
+//Workout Routes
+app.get('/api/workout-groups', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM WorkoutGroups ORDER BY name');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching workout groups:', error);
+        res.status(500).json({ message: 'Error fetching workout groups' });
+    }
+});
+
+app.get('/api/workouts/:groupId', async (req, res) => {
+    const { groupId } = req.params;
+
+    try {
+        const result = await pool.query(
+            'SELECT * FROM Workouts WHERE group_id = $1 ORDER BY name',
+            [groupId]
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching workouts:', error);
+        res.status(500).json({ message: 'Error fetching workouts' });
+    }
+});
+
+app.post('/api/workouts/progress', async (req, res) => {
+    const { userId, workoutId, status } = req.body;
+
+    const points = status === 'Done' ? 5 : status === 'In Progress' ? 3 : 0;
+
+    try {
+        const result = await pool.query(
+            `
+            INSERT INTO UserWorkoutProgress (user_id, workout_id, status, points)
+            VALUES ($1, $2, $3, $4)
+            ON CONFLICT (user_id, workout_id)
+            DO UPDATE SET status = $3, points = $4, updated_at = CURRENT_TIMESTAMP
+            RETURNING *;
+            `,
+            [userId, workoutId, status, points]
+        );
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error updating workout progress:', error);
+        res.status(500).json({ message: 'Error updating workout progress' });
+    }
+});
+
+// Leaderboard Route
+app.get('/api/leaderboard', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT username, total_points
+            FROM users
+            ORDER BY total_points DESC
+            LIMIT 10;
+        `);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        res.status(500).json({ message: 'Error fetching leaderboard' });
+    }
+});
+
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+ 

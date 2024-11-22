@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('motivation').textContent = quoteData.quote || "Push yourself because no one else is going to do it for you.";
 
         // Fetch recommended workouts
-        const exercisesResponse = await fetch('/exercises');
+        const exercisesResponse = await fetch('http://localhost:3000/api/exercises');
         const exercisesData = await exercisesResponse.json();
         const exercisesList = exercisesData.data.exercises;
 

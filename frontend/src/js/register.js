@@ -12,8 +12,21 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
             },
             body: JSON.stringify({ username, password })
         });
+
         const data = await response.json();
-        document.getElementById("registerMessage").textContent = data.message;
+
+        if (response.ok) {
+            // Display success message
+            document.getElementById("registerMessage").textContent = "Registration successful! Redirecting to login...";
+
+            // Redirect to login page after 2 seconds
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 2000);
+        } else {
+            // Display error message from the server
+            document.getElementById("registerMessage").textContent = data.message || "Registration failed!";
+        }
     } catch (error) {
         console.error("Error:", error);
         document.getElementById("registerMessage").textContent = "Registration failed!";

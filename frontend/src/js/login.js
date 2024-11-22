@@ -20,17 +20,14 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         
         const data = await response.json();
 
-        if (data.token) {
-            // Store the token in localStorage
+        if (data.token && data.userId) {
+            // Store the token and userId in localStorage
             localStorage.setItem("token", data.token);
-            
-            // Display a success message
-            document.getElementById("loginMessage").textContent = "Login successful!";
+            localStorage.setItem("userId", data.userId); // Store userId for future use
             
             // Redirect to the home page
             window.location.href = "home.html";
         } else {
-            // Display the error message from the server response
             document.getElementById("loginMessage").textContent = data.message || "Login failed!";
         }
     } catch (error) {
