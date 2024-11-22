@@ -6,8 +6,6 @@ RUN cd backend && npm install
 COPY backend ./backend
 # Copy and install dependencies for the frontend
 COPY frontend ./frontend
-RUN cd frontend && npm install
-RUN cd frontend && npm run build
 FROM node:18 as production-stage
 WORKDIR /app
 # Copy backend and frontend build outputs
