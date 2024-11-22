@@ -1,31 +1,16 @@
-#Build the frontend
-FROM node:14-alpine AS build_frontend
-#Set working directory
-WORKDIR /app/frontend
-#Copy frontend package files
-COPY frontend/package*.json ./
-#Install frontend dependencies
-RUN npm install
-#Copy frontend source code
-COPY frontend/ ./
-#Build the frontend application
-RUN npm run build
-#Build the backend
-FROM node:14-alpine
-# Set working directory
+FROM node:18 as build-stage
 WORKDIR /app
-#Copy backend package files
-COPY backend/package*.json ./
-#Install backend dependencies
-RUN npm install --only=production
-#Copy backend source code
-COPY backend/ ./
-#Copy the frontend build artifacts to the backend's public directory
-COPY --from=build_frontend /app/frontend/build ./public
-#Expose port
+COPY backend/package*.json ./backend/
+RUN cd backend && npm install
+COPY backend ./backend
+COPY frontend /frontend
+RUN cd frontend && npm install
+RUN cd frontend && npm run build
+FROM node:18 as production-stage
+WORKDIR /app
+COPY --from=build-stage /app/backend /backend
+COPY --from=build-stage /app/frontend/build /frontend/build
+RUN cd /backend && npm ci --only=production
 EXPOSE 3000
-#Set environment variables
-ENV PORT=3000
 ENV NODE_ENV=production
-#Start the backend application
-CMD [ "node", "server.js" ]
+CMD ["node", "/backend/server.js"]
