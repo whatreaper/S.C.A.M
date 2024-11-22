@@ -4,7 +4,7 @@ WORKDIR /app
 COPY backend/package*.json ./backend/
 RUN cd backend && npm install
 COPY backend ./backend
-# Copy frontend files (assuming they are static and don't require build tools)
+# Copy frontend files directly
 COPY frontend ./frontend
 FROM node:18 as production-stage
 WORKDIR /app
