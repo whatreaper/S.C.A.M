@@ -1,0 +1,36 @@
+<!-- frontend/public/recipes.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Search</title>
+    <link rel="stylesheet" href="frontend/src/css/styles.css">
+    <link rel="stylesheet" href="frontend/src/css/recipe.css"> 
+</head>
+<body>
+    <nav>
+        <a href="home.html"><h1>Pump'd Fitness</h1></a>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="logout.html">Logout</a>
+        </div>       
+    </nav>
+
+    <main>
+        <h1>Recipe Search</h1>
+        <div>
+            <input type="text" id="recipeQuery" placeholder="Enter recipe name" required>
+            <button onclick="searchRecipe()">Search Recipe</button>
+        </div>
+        <div id="recipeResponse"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Pump'd Fitness. All rights reserved.</p>
+    </footer>
+
+    <script src="frontend/src/js/recipe.js" defer></script>
+</body>
+</html>
