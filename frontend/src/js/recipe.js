@@ -31,6 +31,9 @@ async function searchRecipe() {
         return;
     }
 
+    // Display loading message
+    displayContent('recipeResponse', 'Fetching Recipes...', 'loading');
+
     try {
         const response = await fetch(`https://tasty.p.rapidapi.com/recipes/list?from=0&size=10&q=${query}`, {
             method: 'GET',
@@ -52,26 +55,38 @@ async function searchRecipe() {
             return;
         }
 
-        const list = document.createElement('div');
-        list.classList.add('recipe-list');
+        const tableBody = document.getElementById('recipeTableBody');
+        tableBody.innerHTML = ''; // Clear previous results
+
         recipes.forEach(recipe => {
-            const listItem = document.createElement('div');
-            listItem.classList.add('recipe-item');
-            listItem.innerHTML = `
-                <h3>${recipe.name}</h3>
-                <h4>Ingredients:</h4>
-                <ul>
-                    ${recipe.sections[0].components.map(component => `<li>${component.raw_text}</li>`).join('')}
-                </ul>
-                <h4>Instructions:</h4>
-                <ol>
-                    ${recipe.instructions.map(instruction => `<li>${instruction.display_text}</li>`).join('')}
-                </ol>
-            `;
-            list.appendChild(listItem);
+            const row = document.createElement('tr');
+
+            const ingredientsCell = document.createElement('td');
+            ingredientsCell.classList.add('ingredients-cell');
+            const ingredientsList = document.createElement('ul');
+            recipe.sections[0].components.forEach(component => {
+                const li = document.createElement('li');
+                li.textContent = component.raw_text;
+                ingredientsList.appendChild(li);
+            });
+            ingredientsCell.appendChild(ingredientsList);
+
+            const instructionsCell = document.createElement('td');
+            const instructionsList = document.createElement('ol');
+            recipe.instructions.forEach(instruction => {
+                const li = document.createElement('li');
+                li.textContent = instruction.display_text;
+                instructionsList.appendChild(li);
+            });
+            instructionsCell.appendChild(instructionsList);
+
+            row.appendChild(ingredientsCell);
+            row.appendChild(instructionsCell);
+
+            tableBody.appendChild(row);
         });
 
-        displayContent('recipeResponse', list);
+        displayContent('recipeResponse', ''); // Clear loading message
     } catch (error) {
         console.error('Error fetching recipes:', error);
         displayContent('recipeResponse', 'Error fetching recipes.');

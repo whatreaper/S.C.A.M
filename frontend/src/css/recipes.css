@@ -12,19 +12,11 @@
     background-color: rgba(255, 255, 255, 0.1);
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .recipe-item h3 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
-}
-
-.recipe-item img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 0.5rem 0;
 }
 
 .recipe-item ol {
@@ -33,4 +25,39 @@
 
 .recipe-item li {
     margin-bottom: 0.5rem;
+}
+
+/* Center the search container */
+.search-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.search-container h1 {
+    margin-bottom: 1rem;
+}
+
+.search-container div {
+    display: inline-block;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+td.ingredients-cell {
+    padding-left: 20px; /* Adjust this value to move the ingredients to the right */
 }

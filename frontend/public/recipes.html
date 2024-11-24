@@ -13,18 +13,31 @@
     <nav>
         <a href="home.html"><h1>Pump'd Fitness</h1></a>
         <div class="nav-links">
-            <a href="home.html">Home</a>
             <a href="logout.html">Logout</a>
-        </div>       
+            <a href="profile.html">
+                <img src="/images/profile.png" alt="Profile" class="profile-icon">
+            </a>
+        </div>
     </nav>
 
     <main>
-        <h1>Recipe Search</h1>
-        <div>
-            <input type="text" id="recipeQuery" placeholder="Enter recipe name" required>
-            <button onclick="searchRecipe()">Search Recipe</button>
+        <div class="search-container">
+            <h1>Recipe Search</h1>
+            <div>
+                <input type="text" id="recipeQuery" placeholder="Enter recipe name" required>
+                <button onclick="searchRecipe()">Search Recipe</button>
+            </div>
         </div>
         <div id="recipeResponse"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ingredients</th>
+                    <th>Instructions</th>
+                </tr>
+            </thead>
+            <tbody id="recipeTableBody"></tbody>
+        </table>
     </main>
 
     <footer>
