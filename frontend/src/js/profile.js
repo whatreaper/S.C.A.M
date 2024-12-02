@@ -1,4 +1,4 @@
-
+const API_BASE_URL = '';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
