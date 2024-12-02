@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000'; // Update if using a different port or base URL
+const API_BASE_URL = '';
 let token = '';
 
 // Helper function to update response messages
