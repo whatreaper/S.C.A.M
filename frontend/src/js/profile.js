@@ -1,3 +1,5 @@
+const API_BASE_URL = '';
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const token = localStorage.getItem('token'); 
@@ -8,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Fetch user data
-        const userResponse = await fetch('http://localhost:3000/api/user', {
+        const userResponse = await fetch(`${API_BASE_URL}/api/user`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`

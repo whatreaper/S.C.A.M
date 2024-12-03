@@ -123,13 +123,42 @@ async function getExercises() {
     }
 }
 
+async function getNextPage(url) {
+    await fetch(url).then(response => {
+        if (response.status >= 400) {
+            response.json().then(errorBody => {
+                let message = document.getElementById("message");
+                message.textContent = errorBody.error;
+            });
+        } else {
+            response.json().then(async body => {
+                let data = body.data;
+                let currentPage = data.currentPage;
+                let totalPages = data.totalPages;
 
-
-
+                if(currentPage === totalPages) {
+                    url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
+                    fetchExercise(url);
+                } else {
+                    offset += amount;
+                    url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
+                    fetchExercise(url);
+                }
+  
+            }).catch(error => {
+                console.log(error); 
+            });
+        }
+    }).catch(error => {
+        console.log("Outer Error:", error);
+    });
+    
+}
 
 let exerciseInput = document.getElementById("searchForExercise");
-let displayAmount = document.getElementById("displayAmount");
+// let displayAmount = document.getElementById("displayAmount");
 let sendButton = document.getElementById("send");
+let previousButton = document.getElementById("previous");
 let nextButton = document.getElementById("next");
 let exercise = '';
 let amount = 10;
@@ -144,8 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
 sendButton.addEventListener("click", () => {
 
     exercise = exerciseInput.value;
-    amount = displayAmount.value;
-
+    offset = 0;
     let url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
 
     fetchExercise(url);
@@ -153,7 +181,16 @@ sendButton.addEventListener("click", () => {
 
 nextButton.addEventListener("click", () => {
     exercise = exerciseInput.value;
-    amount = displayAmount.value;
+
+    let url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
+
+    getNextPage(url);
+    
+});
+
+previousButton.addEventListener("click", () => {
+    exercise = exerciseInput.value;
+    /* amount = displayAmount.value;
 
     function isNumber(str) { return !isNaN(str) && !isNaN(parseFloat(str)); }
 
@@ -161,9 +198,14 @@ nextButton.addEventListener("click", () => {
         amount = 10;
     } else {
         amount = parseInt(amount);
+    } */
+
+    if(offset === 0) {
+        offset = 0;
+    } else {
+        offset -= amount;
     }
 
-    offset += amount;
     let url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
 
     fetchExercise(url);

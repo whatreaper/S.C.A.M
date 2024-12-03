@@ -1,0 +1,63 @@
+/* frontend/src/css/recipe.css */
+
+/* Recipe list styling */
+.recipe-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.recipe-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.recipe-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.recipe-item ol {
+    padding-left: 1.5rem;
+}
+
+.recipe-item li {
+    margin-bottom: 0.5rem;
+}
+
+/* Center the search container */
+.search-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.search-container h1 {
+    margin-bottom: 1rem;
+}
+
+.search-container div {
+    display: inline-block;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+td.ingredients-cell {
+    padding-left: 20px; /* Adjust this value to move the ingredients to the right */
+}
