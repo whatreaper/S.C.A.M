@@ -1,4 +1,4 @@
-const API_BASE_URL = '';
+const API_BASE_URL = 'http://localhost:3000';
 
 /**
  * Helper function to display messages or data in the response container.
@@ -26,6 +26,7 @@ function displayContent(elementId, content, className = '') {
  */
 async function searchRecipe() {
     const query = document.getElementById('recipeQuery').value.trim();
+    const calorieLimit = document.getElementById('calorieLimit').value.trim();
     if (!query) {
         displayContent('recipeResponse', 'Please enter a recipe name.');
         return;
@@ -35,7 +36,9 @@ async function searchRecipe() {
     displayContent('recipeResponse', 'Fetching Recipes...', 'loading');
 
     try {
-        const response = await fetch(`https://tasty.p.rapidapi.com/recipes/list?from=0&size=10&q=${query}`, {
+        let apiUrl = `https://tasty.p.rapidapi.com/recipes/list?from=0&size=10&q=${query}`;
+
+        const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
                 'X-RapidAPI-Host': 'tasty.p.rapidapi.com',
@@ -48,7 +51,12 @@ async function searchRecipe() {
         }
 
         const data = await response.json();
-        const recipes = data.results;
+        let recipes = data.results;
+
+        // Filter recipes by calorie limit if provided
+        if (calorieLimit) {
+            recipes = recipes.filter(recipe => recipe.nutrition && recipe.nutrition.calories <= calorieLimit);
+        }
 
         if (recipes.length === 0) {
             displayContent('recipeResponse', 'No recipes found.');
@@ -59,6 +67,16 @@ async function searchRecipe() {
         tableBody.innerHTML = ''; // Clear previous results
 
         recipes.forEach(recipe => {
+            // Add a row for the recipe title and calories
+            const titleRow = document.createElement('tr');
+            const titleCell = document.createElement('td');
+            titleCell.colSpan = 2; // Span across both columns
+            titleCell.classList.add('recipe-title');
+            titleCell.innerHTML = `${recipe.name} - ${recipe.nutrition ? recipe.nutrition.calories : 'N/A'} calories`;
+            titleRow.appendChild(titleCell);
+            tableBody.appendChild(titleRow);
+
+            // Add a row for the ingredients and instructions
             const row = document.createElement('tr');
 
             const ingredientsCell = document.createElement('td');
