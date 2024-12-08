@@ -1,5 +1,3 @@
-const API_BASE_URL = '';
-
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const token = localStorage.getItem('token'); 
@@ -10,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Fetch user data
-        const userResponse = await fetch(`${API_BASE_URL}/api/user`, {
+        const userResponse = await fetch('/api/user', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -26,22 +24,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('username').textContent = `${userName}'s Progress`;
 
         // Fetch daily motivational quote from your backend
-        const quoteResponse = await fetch('http://localhost:3000/api/daily-quote');
+        const quoteResponse = await fetch('/api/daily-quote');
         const quoteData = await quoteResponse.json();
         document.getElementById('motivation').textContent = quoteData.quote || "Push yourself because no one else is going to do it for you.";
 
-        // Fetch recommended workouts
-        const exercisesResponse = await fetch('http://localhost:3000/api/exercises');
-        const exercisesData = await exercisesResponse.json();
-        const exercisesList = exercisesData.data.exercises;
+        // Fetch 5 random workouts from the database
+        const workoutsResponse = await fetch('/api/random-workouts', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
 
-        // Select 5 random exercises
+        if (!workoutsResponse.ok) {
+            throw new Error('Failed to fetch random workouts');
+        }
+
+        const workouts = await workoutsResponse.json();
+
+        // Populate the recommended workouts list
         const recommendedWorkouts = document.getElementById('recommended-workouts');
         recommendedWorkouts.innerHTML = '';
-        const randomExercises = exercisesList.sort(() => 0.5 - Math.random()).slice(0, 5);
-        randomExercises.forEach(exercise => {
+        workouts.forEach(workout => {
             const li = document.createElement('li');
-            li.textContent = `${exercise.name}: ${exercise.reps || "3 sets of 10"}`;
+            li.textContent = workout.name;
             recommendedWorkouts.appendChild(li);
         });
     } catch (error) {

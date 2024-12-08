@@ -406,6 +406,83 @@ app.get('/api/workouts/:groupId', async (req, res) => {
     }
 });
 
+app.get('/api/workoutplans', authenticateToken, async (req, res) => {
+    const userId = req.user.id;
+
+    try {
+        const result = await pool.query(
+            'SELECT * FROM workoutplans WHERE user_id = $1 ORDER BY created_at DESC',
+            [userId]
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching workout plans:', error);
+        res.status(500).json({ message: 'Error fetching workout plans' });
+    }
+});
+
+app.get('/api/random-workouts', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT name 
+            FROM workouts 
+            ORDER BY RANDOM() 
+            LIMIT 5;
+        `);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching random workouts:', error);
+        res.status(500).json({ message: 'Error fetching random workouts' });
+    }
+});
+
+
+app.post('/api/workoutplans', authenticateToken, async (req, res) => {
+    const userId = req.user.id; // Extracted from the token payload
+    const { name, workoutIds } = req.body;
+
+    try {
+        // Insert the workout plan
+        const planResult = await pool.query(
+            'INSERT INTO workoutplans (user_id, name) VALUES ($1, $2) RETURNING id',
+            [userId, name]
+        );
+        const planId = planResult.rows[0].id;
+
+        // Insert associated workouts into the join table
+        const values = workoutIds.map(workoutId => `('${planId}', '${workoutId}')`).join(',');
+        await pool.query(
+            `INSERT INTO workoutplanworkouts (plan_id, workout_id) VALUES ${values}`
+        );
+
+        res.status(201).json({ message: 'Workout plan created successfully!' });
+    } catch (error) {
+        console.error('Error creating workout plan:', error);
+        res.status(500).json({ message: 'Error creating workout plan' });
+    }
+});
+
+app.get('/api/workoutplans/:planId/workouts', authenticateToken, async (req, res) => {
+    const { planId } = req.params;
+
+    try {
+        const result = await pool.query(
+            `SELECT w.id, w.name, uwp.status
+             FROM workoutplanworkouts wpw
+             JOIN workouts w ON wpw.workout_id = w.id
+             LEFT JOIN userworkoutprogress uwp 
+             ON uwp.workout_id = w.id AND uwp.user_id = $1
+             WHERE wpw.plan_id = $2`,
+            [req.user.id, planId]
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching workouts for plan:', error);
+        res.status(500).json({ message: 'Error fetching workouts for plan' });
+    }
+});
+
+
 app.post('/api/workouts/progress', async (req, res) => {
     const { userId, workoutId, status } = req.body;
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Workout Plan</title>
+    <link rel="stylesheet" href="frontend/src/css/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="home.html"><h1>Pump'd Fitness</h1></a>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="logout.html">Logout</a>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Create Your Workout Plan</h1>
+        <form id="createPlanForm">
+            <label for="planName">Plan Name:</label>
+            <input type="text" id="planName" name="planName" required placeholder="Enter a name for your plan">
+            
+            <div id="workoutGroups">
+                <!-- Workout groups will be dynamically populated here -->
+            </div>
+            
+            <button type="submit" id="savePlanButton">Save Plan</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Pump'd Fitness. All rights reserved.</p>
+    </footer>
+
+    <script src="/frontend/src/js/createplan.js"></script>
+</body>
+</html>
