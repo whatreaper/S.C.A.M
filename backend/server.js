@@ -32,6 +32,104 @@ app.use(express.static(path.join(__dirname, '../frontend/public')));
 app.use('/frontend/src', express.static(path.join(__dirname, '../frontend/src')));
 app.use('/api', quoteRoutes);
 
+// Comments API routes
+app.get('/api/comments', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT Comments.id, Comments.content, Comments.created_at, Users.username
+            FROM Comments
+            JOIN Users ON Comments.user_id = Users.id
+            ORDER BY Comments.created_at DESC;
+        `);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching comments:', error);
+        res.status(500).json({ message: 'Error fetching comments' });
+    }
+});
+
+app.post('/api/comments', authenticateToken, async (req, res) => {
+    const { content } = req.body;
+
+    if (!content || content.trim() === '') {
+        return res.status(400).json({ message: 'Comment content cannot be empty.' });
+    }
+
+    try {
+        const result = await pool.query(
+            `INSERT INTO Comments (user_id, content) VALUES ($1, $2) RETURNING *;`,
+            [req.user.id, content]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error('Error adding comment:', error);
+        res.status(500).json({ message: 'Error adding comment' });
+    }
+});
+
+// Serve comments.html
+app.get('/comments', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/comments.html'));
+});
+
+// Example user authentication routes
+app.post('/register', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({ message: 'Username and password are required.' });
+        }
+
+        const userCheck = await pool.query('SELECT * FROM Users WHERE username = $1', [username]);
+        if (userCheck.rows.length > 0) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const result = await pool.query(
+            'INSERT INTO Users (username, password) VALUES ($1, $2) RETURNING id',
+            [username, hashedPassword]
+        );
+
+        const userId = result.rows[0].id;
+        const token = jwt.sign({ id: userId, username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.status(201).json({ message: 'User registered successfully', token });
+    } catch (error) {
+        console.error('Error in /register route:', error);
+        res.status(500).json({ message: 'Error registering user' });
+    }
+});
+
+app.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({ message: 'Username and password are required.' });
+        }
+
+        const userResult = await pool.query('SELECT * FROM Users WHERE username = $1', [username]);
+        if (userResult.rows.length === 0) {
+            return res.status(400).json({ message: 'User does not exist' });
+        }
+
+        const user = userResult.rows[0];
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+            return res.status(401).json({ message: 'Invalid password' });
+        }
+
+        const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.json({ message: 'Login successful', token, userId: user.id });
+    } catch (error) {
+        console.error('Error in /login route:', error);
+        res.status(500).json({ message: 'Error logging in' });
+    }
+});
+
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(" ")[1];
