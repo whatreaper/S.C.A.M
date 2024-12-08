@@ -4,7 +4,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
     margin: 0;
-    padding: 20px;
+    /*padding: 20px;*/
     text-align: center;
 }
 
@@ -43,4 +43,55 @@ tr:hover {
 td {
     font-size: 1rem;
     color: #555;
+}
+
+/* Navigation bar */
+nav {
+    width: 100%;
+    height: auto;
+    background-color: #ff5733; /* Vibrant orange for the nav */
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+nav h1 {
+    font-size: 2rem;
+    color: white;
+    margin: 0;
+}
+
+#logoutButton {
+    border: none;
+    background: transparent; /* Match the rest of the navbar */
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.profile-icon{
+    width: 70px;
+    height: 60px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ddd; /* Light hover effect */
 }

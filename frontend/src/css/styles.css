@@ -31,6 +31,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    margin-bottom: 20px;
 }
 
 nav h1 {
@@ -89,6 +90,40 @@ a {
     color: #555;
 }
 
+/* Login Section */
+login {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+}
+
+login h1 {
+    padding: 10px;
+}
+
+login form {
+    margin: auto;
+    width: 50%;
+}
+
+.centerText {
+    margin: auto;
+    text-align: center;
+}
+
+/* Exercise Section */
+exercise {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+}
+
+exercise .center {
+    display: block;
+    margin: auto;
+}
+
+
 /* Section styling */
 .section-bg {
     width: 80%;
@@ -97,6 +132,7 @@ a {
     background-color: white;
     border-radius: 8px;
     transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    text-align: center;
 }
 
 .section-bg:hover {
