@@ -10,12 +10,15 @@
         <nav>
             <a href="home.html"><h1>Pump'd Fitness</h1></a>
             <div class="nav-links">
-                <a href="home.html">Home</a>
                 <a href="logout.html">Logout</a>
+                <a href="profile.html">
+                    <img src="/images/profile.png" alt="Profile" class="profile-icon">
+                </a>
             </div>
         </nav>
 
         <main>
+            <exercise>
             <h1>Exercises Base</h1>
             <div>
                 <label for="searchForExercise">Search For Specific Exercise:</label>
@@ -27,9 +30,12 @@
                 <input id="displayAmount" type="text" />
             </div> -->
             <div id="pageNumber"></div>
-            <button id="previous"> Previous Page</button>
+            <div class="center">
+            <button id="previous" class=""> Previous Page</button>
             <button id="next"> Next Page</button>
+            </div>
             <div id="message"></div>
+            </exercise>
             <table>
                 <tr>
                     <th>Image</th>

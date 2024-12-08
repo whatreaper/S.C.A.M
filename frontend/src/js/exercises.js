@@ -167,7 +167,8 @@ let offset = 0;
 document.addEventListener('DOMContentLoaded', () => {
     let url = `/exercises?search=${exercise}&offset=${offset}&limit=${amount}`;
     fetchExercise(url);
-    getExercises();
+    // Using Fly for database, no need to manually update anymore
+    // getExercises();
 });
 
 sendButton.addEventListener("click", () => {
