@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pumpd - Comments</title>
+    <link rel="stylesheet" href="frontend/src/css/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="home.html"><h1>Pump'd Fitness</h1></a>
+        <div class="nav-links">
+            <a href="logout.html">Logout</a>
+            <a href="profile.html">
+                <img src="/images/profile.png" alt="Profile" class="profile-icon">
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <h1>Comments Section</h1>
+            <p>Share your thoughts or interact with others!</p>
+
+            <!-- Comment Form -->
+            <form id="commentForm" class="form">
+                <label for="commentContent">Write a comment:</label>
+                <textarea id="commentContent" class="input-textarea" placeholder="Type your comment here..." required></textarea>
+                <button type="submit" class="btn-primary">Post Comment</button>
+            </form>
+
+            <!-- Comments Section -->
+            <div id="commentsSection" class="comments-section">
+                <h2>All Comments</h2>
+                <div id="commentList" class="comment-list">
+                    <!-- Comments will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Pump'd Fitness. All rights reserved.</p>
+    </footer>
+
+    <script src="frontend/src/js/comments.js"></script>
+</body>
+</html>
