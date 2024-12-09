@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const plansTableBody = document.querySelector('#plansTable tbody');
     const token = localStorage.getItem('token');
+    const createPlanBtn = document.getElementById('createPlanBtn');
+
+    // Redirect to create plan page when the button is clicked
+    createPlanBtn.addEventListener('click', () => {
+        window.location.href = 'createplan.html';
+    });
 
     // Fetch user's workout plans
     try {

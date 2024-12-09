@@ -1,72 +1,67 @@
-const API_BASE_URL = ''; // Update with your Fly.io deployment URL if necessary
+document.addEventListener('DOMContentLoaded', async () => {
+    const commentList = document.getElementById('commentList');
+    const commentForm = document.getElementById('commentForm');
+    const commentContent = document.getElementById('commentContent');
 
-// Function to fetch and display comments
-async function loadComments() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/comments`);
-        const data = await response.json();
-        const commentList = document.getElementById('commentList');
-        commentList.innerHTML = '';
+    // Fetch and render comments
+    const loadComments = async () => {
+        try {
+            const response = await fetch('/api/comments');
+            if (!response.ok) {
+                throw new Error('Failed to fetch comments');
+            }
 
-        if (data.length === 0) {
-            commentList.innerHTML = '<p>No comments yet.</p>';
+            const comments = await response.json();
+            commentList.innerHTML = ''; // Clear existing comments
+
+            comments.forEach(comment => {
+                const commentCard = document.createElement('div');
+                commentCard.classList.add('comment-card');
+                commentCard.innerHTML = `
+                    <div class="comment-header">
+                        <span class="username">${comment.username}</span>
+                        <span class="comment-date">${new Date(comment.created_at).toLocaleString()}</span>
+                    </div>
+                    <div class="comment-content">${comment.content}</div>
+                `;
+                commentList.appendChild(commentCard);
+            });
+        } catch (error) {
+            console.error('Error loading comments:', error);
+        }
+    };
+
+    // Post a new comment
+    commentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const content = commentContent.value.trim();
+        if (!content) {
+            alert('Comment cannot be empty.');
             return;
         }
 
-        data.forEach(comment => {
-            const commentDiv = document.createElement('div');
-            commentDiv.classList.add('comment');
+        try {
+            const response = await fetch('/api/comments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ content })
+            });
 
-            commentDiv.innerHTML = `
-                <p class="username">${comment.username}</p>
-                <p class="content">${comment.content}</p>
-                <p class="timestamp">${new Date(comment.created_at).toLocaleString()}</p>
-            `;
+            if (!response.ok) {
+                throw new Error('Failed to post comment');
+            }
 
-            commentList.appendChild(commentDiv);
-        });
-    } catch (error) {
-        console.error('Error fetching comments:', error);
-    }
-}
-
-// Function to post a new comment
-document.getElementById('commentForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const content = document.getElementById('commentContent').value.trim();
-    const errorMessage = document.getElementById('errorMessage');
-
-    if (!content) {
-        errorMessage.textContent = 'Comment content cannot be empty.';
-        return;
-    }
-
-    try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/api/comments`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({ content }),
-        });
-
-        if (!response.ok) {
-            const data = await response.json();
-            errorMessage.textContent = data.message || 'Error posting comment.';
-            return;
+            commentContent.value = ''; // Clear the textarea
+            await loadComments(); // Reload comments
+        } catch (error) {
+            console.error('Error posting comment:', error);
         }
+    });
 
-        // Clear the input and reload comments
-        document.getElementById('commentContent').value = '';
-        errorMessage.textContent = '';
-        loadComments();
-    } catch (error) {
-        console.error('Error posting comment:', error);
-        errorMessage.textContent = 'Error posting comment.';
-    }
+    // Initial load of comments
+    await loadComments();
 });
-
-// Initial load of comments
-loadComments();
