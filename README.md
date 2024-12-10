@@ -24,7 +24,10 @@ Make sure PostgreSQL is running.
 Create a database named pumpd and set up a user with access
 CREATE DATABASE pumpd;
 \c pumpd
+\i setup.sql
 \i schema.sql
+\i populate_workouts.sql
+\i workout_plans.sql
 \dt to view List of relations
 
 Copy the env_sample.json file to a new file named .env in the backend folder

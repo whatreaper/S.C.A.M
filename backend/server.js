@@ -5,13 +5,14 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const quoteRoutes = require('./routes/quotes');
+const app = express();
+const PORT = process.env.PORT || 3000;
+const path = require('path');
 
 // Load environment variables
 dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-const path = require('path');
+
 
 const { Pool } = require('pg');
 const pool = new Pool({
@@ -27,10 +28,17 @@ pool.query('SELECT NOW()', (err, res) => {
     }
 });
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/register.html'));
+});
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 app.use('/frontend/src', express.static(path.join(__dirname, '../frontend/src')));
 app.use('/api', quoteRoutes);
+
+
+
 
 // Comments API routes
 app.get('/api/comments', async (req, res) => {
