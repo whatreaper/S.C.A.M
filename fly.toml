@@ -1,31 +1,23 @@
-# fly.toml file for s-c-a-m-ibwkya
+# fly.toml app configuration file generated for s-c-a-m-syrj2w on 2024-12-09T21:51:14Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "s-c-a-m-ibwkya"
-
-primary_region = "ewr"
+app = 's-c-a-m-syrj2w'
+primary_region = 'iad'
 
 [build]
-  dockerfile = "Dockerfile"
 
-[env]
-  PORT = "3000"
-  NODE_ENV = "production"
-  exercise_api_url = "https://exercisedb-api.vercel.app/api/v1/exercises"
-
-[[services]]
+[http_service]
   internal_port = 3000
-  protocol = "tcp"
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
 
-  [[services.ports]]
-    port = 80
-    handlers = ["http"]
-
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
-
-  [services.tcp_checks]
-    interval = 10000       # Check every 10 seconds
-    timeout = 2000         # Timeout after 2 seconds
-    grace_period = 30000   # 30 seconds grace period before checking
-    restart_limit = 0      # No limit on restarts
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 1024
